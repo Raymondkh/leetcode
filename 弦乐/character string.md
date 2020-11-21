@@ -26,8 +26,23 @@ r/R 原始字符串,用法：r"123123\123\123"里面的字符不会被转义，�
 f"hello, {name}"  # name为变量，直接嵌入在字符串中
 
 常用的字符串内置函数：(每个都需要添加一个例子)
+find(str, beg=0, end=len(string))
+rfind()
+index(str, beg=0, end=len(string))
 count(str, beg=0, end=len(string))
-endwith(shffix, beg=0, end=len(string))
+replace(old, new, [, max]) # max是最大替换次数
+max(str)  # 字符串里最大的字母
+min(str) # 字符串里最小的字母
+len(str) # 获取字符长度
+lstrip()
+rstrip()
+strip()  # 等价于lstrip().rstrip()
+lower()
+upper()
+isalpla()
+startswith() 
+endswith(shffix, beg=0, end=len(string))  # 注意end与with之间还有一个字母s
+
 
 
 
