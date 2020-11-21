@@ -79,7 +79,6 @@ re.split() # ?
 
 ## leetcode
 #### easy
-
 ```python
 # leetcode-13
 dict = {}  # 里面要补题目写的罗马数字
@@ -124,7 +123,35 @@ if len(tmp) > len(mxalist):
   maxlist = tmp[:]
 return len(mxalist)
 
-# leetcode-5 看题解
-
+leetcode-125-已通过使用了内置函数去处理字符串，还是挺简洁的
+class Solution(object):
+    def isPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        # 将s中所有非数字和字符的符号去掉，链接起来再全部去小写
+        # 去中值一直对比是否相等，一直相同则是回文串，否则不是
+        import re
+        s = "".join(re.split('[^0-9a-zA-Z]', s)).lower()
+        n = len(s)
+        # print(s)
+        if n % 2 == 0:
+            # 偶数
+            n1 = n / 2
+        else:
+            n1 = n // 2 + 1
+        for i in range(n1):
+            # print(s[i], s[-i-1])
+            if s[i] != s[-i-1]:
+                return False
+        return True
 ```
+
+### mid
+```python
+
+# leetcode-5 看题解
+```
+
 
