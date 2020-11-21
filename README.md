@@ -5,10 +5,10 @@
  ## 学习路线：
  总： 数据结构-->python内置模块--->leetcode---->算法----->leetcode
  1. 基本数据结构的原始代码实现来理解其原理
- 2.查找该数据结构是否有对应的已经封装好的模块，并使用起来，如队列和双端队列可使用collections.deque模块
+ 2. 查找该数据结构是否有对应的已经封装好的模块，并使用起来，如队列和双端队列可使用collections.deque模块
  （因为网上的资料其实不是很多，每个博主或书籍等各有各自写的好的部分，我想来进行统一的整理出完整的python框架，慢慢积累吧）
- 3、leetcode刷对应部分的目题实践起来，这才是最终目的！！！
+ 3. leetcode刷对应部分的目题实践起来，这才是最终目的！！！
  
  ### 资料：
-1、[cy69855522 github](https://github.com/cy69855522/Shortest-LeetCode-Python-Solutions#%E4%B8%93%E9%A2%98%E6%8E%A2%E7%B4%A2)
-2、[python的菜鸟教程](https://www.runoob.com/python/python-tutorial.html)
+1. [cy69855522 github](https://github.com/cy69855522/Shortest-LeetCode-Python-Solutions#%E4%B8%93%E9%A2%98%E6%8E%A2%E7%B4%A2)
+2. [python的菜鸟教程](https://www.runoob.com/python/python-tutorial.html)
