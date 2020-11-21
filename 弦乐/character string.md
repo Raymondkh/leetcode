@@ -80,4 +80,51 @@ re.split() # ?
 ## leetcode
 #### easy
 
+```python
+# leetcode-13
+dict = {}  # 里面要补题目写的罗马数字
+sum = dict[s[0]]
+n = 1
+while n < l:
+  if dict[s[n]] > dict[s[n-1]]:
+    sum -= dict[s[n-1]]
+    sum += (dict[s[n]] - dict[s[n-1]])
+  else:
+    sum += dict[s[n]]
+ 
+# leetcode-14
+s1 = string[0]
+out = [s for s in s1]
+for s in string[1:]:
+  n = 0
+  while n < len(out):
+    if s[n] == out[n]:
+      n += 1
+    else:
+      out = out[:n]
+return "".join(out)
+
+# leetcode-38
+
+# leetcode-28
+return haystack.find(needle)
+
+# leetcode-3,再看看题解其实思路是一样的，但是题解的写法比较高级一点吧
+maxlist = []
+tmp = []
+for c in s:
+  if c in tmp:
+    if len(tmp) > len(maxlist):
+      maxlist = tmp[:]
+    id = tmp.index(c)
+    tmp  =tmp[id+1:]
+  else:
+    tmp.append(c)
+if len(tmp) > len(mxalist):
+  maxlist = tmp[:]
+return len(mxalist)
+
+# leetcode-5 看题解
+
+```
 
