@@ -3,14 +3,9 @@
 我觉得字符串这部分学完内置函数和正则化之后，刷leetcode更多的使用一定的算法去完成题目，如动态规划等算法。
 
 
-1. str类型的通用函数及操作，如find、index、replace、切片，需要整理出来
-- https://www.runoob.com/python/python-strings.html  python
-- https://www.runoob.com/python3/python3-string.html  python3
+1. str类型的通用函数及操作，如find、index、replace、切片，需要整理出来 [菜鸟教程-字符串](https://www.runoob.com/python3/python3-string.html)
 2. 字符串匹配：朴素匹配算法、KMP算法（原理、代码掌握）、对比一下KMP与find函数的效率
-3. python 正则化（都要尝试一遍）
-- https://www.runoob.com/python/python-reg-expressions.html python
-- https://www.runoob.com/python3/python3-reg-expressions.html  python3
-- https://www.runoob.com/regexp/regexp-tutorial.html 正则化教程
+3. python [正则表达式](https://www.runoob.com/regexp/regexp-tutorial.html)
 
 ### 字符串操作与内置函数
 - 字符串索引是从0开始的,[]索引是左闭右开(即取到右索引值的前一位, i-1)
@@ -41,28 +36,67 @@
 - 在python2中普通字符是以8位ASCLL码来存储，而Unicode字符串则存储为16位unicode字符串，这样能表示更多的字符集，使用的语法是在字符串前面加上前缀u
 
 ### 常用的字符串内置函数：(每个都需要添加一个例子)
-find(str, beg=0, end=len(string))
-rfind()
-index(str, beg=0, end=len(string))
-count(str, beg=0, end=len(string))
-replace(old, new, [, max]) # max是最大替换次数
-max(str)  # 字符串里最大的字母
-min(str) # 字符串里最小的字母
-len(str) # 获取字符长度
-lstrip()
-rstrip()
-strip()  # 等价于lstrip().rstrip()
-lower()
-upper()
-isalpla()
-startswith() 
-endswith(shffix, beg=0, end=len(string))  # 注意end与with之间还有一个字母s
+- str.find(str, beg=0, end=len(string))  和  rfind()从右边开始查找 
+```python
+str1 = "Runoob example....wow!!!"
+str2 = "exam";
+ 
+print (str1.find(str2))      # 输出: 7  成功找到则返回开头的索引
+print (str1.find(str2, 5))   # 输出: 7  
+print (str1.find(str2, 10))  # 输出: -1  从10开始寻找已经找不到了，所以返回-1
+```
+- str.index(str, beg=0, end=len(string))  # 也是子字符串，与find的区别就是找不到会报错  和 rindex()
+```python
+str1 = "Runoob example....wow!!!"
+str2 = "exam";
+
+print (str1.index(str2))      # 输出: 7  找到则返回索引
+print (str1.index(str2, 5))   # 输出: 7
+print (str1.index(str2, 10))  # ValueError:substring not found 找不到就会报错
+```
+- str.count(sub, start=0, end=len(string)) # 在str中统计sub子字符串的数量,start和end为统计区间
+```python
+str="www.runoob.com"
+sub='o'
+print ("str.count('o') : ", str.count(sub))  # 输出: str.count('o') :  3
+sub='run'    # 子字符串可以是单个字符也可以是多个字符
+print ("str.count('run', 0, 10) : ", str.count(sub,0,10)) # 输出: str.count('run', 0, 10) :  1
+# 总结：count必须有输入一个子字符串作为目标来统计数量
+
+import collections 
+c = collections.Counter(str)
+print(c)  # 输出: Counter({'w': 3, 'o': 3, '.': 2, 'r': 1, 'u': 1, 'n': 1, 'b': 1, 'c': 1, 'm': 1})
+print(c['w']) # 输出: 3 能一次统计所有单个字符的数量
+```
+- str.split(str, num=string.count(str)) # 通过指定分隔符str来分割字符串存放在list中
+```python
+str = "this is string example....wow!!!"
+print (str.split( ))       # 以空格为分隔符
+print (str.split('i',1))   # 以 i 为分隔符
+print (str.split('w'))     # 以 w 为分隔符
+#输出：
+#['this', 'is', 'string', 'example....wow!!!']
+#['th', 's is string example....wow!!!']
+#['this is string example....', 'o', '!!!']
+```
+- replace(old, new, [, max]) # max是最大替换次数
+- "".join(seq)  # 将前面的字符串插入到seq元素之间形成新的字符串
+- max(str)  # 字符串里最大的字母
+- min(str) # 字符串里最小的字母
+- len(str) # 获取字符长度
+- lstrip() 和 rstrip() 和 strip() 截取左右两边的空格或指定字符
+- islower()判断是不是小写 和 lower() 转换为小写
+- isupper()判断是不是大写 和 upper() 转换为大写
+- isalpla()  # 只有有一个字符且所有字符都是字母或中文字则True,如果有.#等其他字符则False
+- isdigit()  # 如果只包含数字则True，负责False
+- startswith(substr, beg=0, end=len(string)) 
+- endswith(shffix, beg=0, end=len(string))  # 注意end与with之间还有一个字母s # 检测是否包含指定后缀
 
 
-## 正则表达式
+### [正则表达式](https://www.runoob.com/regexp/regexp-tutorial.html)
 import re
 
-正则表达式修饰符（常用）：
+#### 正则表达式修饰符（常用）：
 re.I??
 re.M
 re.S
@@ -79,15 +113,18 @@ a|b # a或b
 [0-9] # 所有数字
 [a-zA-Z] # 所有字母
 
-内置函数
-re.match(pattern, string, flags=0)
-- 通过.group(0)获得整个字符 或 .group(1..)具体索引来获取第几个字符串，从1开始
-re.search(pattern, string, flags=0)
-re.sub(pattern, repl, string, count=0, flags=0)
-re.compile()
-re.findall() # 返回list
-re.finditer()
-re.split() # ?
+#### 内置函数
+- re.match(pattern, string, flags=0) # 从字符串起始位置匹配pttern，成功则返回匹配对象，不成功则返回None
+- 返回的匹配对象使用group(num) 或 grous()
+```python
+
+```
+- re.search(pattern, string, flags=0)
+- re.sub(pattern, repl, string, count=0, flags=0)
+- re.compile()
+- re.findall() # 返回list
+- re.finditer()
+- re.split() # ?
 
 ## leetcode
 #### easy
