@@ -1,5 +1,8 @@
 # 字符串
 
+我觉得字符串这部分学完内置函数和正则化之后，刷leetcode更多的使用一定的算法去完成题目，如动态规划等算法。
+
+
 1. str类型的通用函数及操作，如find、index、replace、切片，需要整理出来
 - https://www.runoob.com/python/python-strings.html  python
 - https://www.runoob.com/python3/python3-string.html  python3
@@ -9,7 +12,7 @@
 - https://www.runoob.com/python3/python3-reg-expressions.html  python3
 - https://www.runoob.com/regexp/regexp-tutorial.html 正则化教程
 
-
+## 字符串操作与内置函数
 字符串索引是从0开始的,[]索引是左闭右开(即不会取到有索引值)
 字符串切片是截取出字符串成为新的内容，不影响源字符串，同时需要注意的是字符串是不可变类型，不能只修改其中的部分字符
 常用操作符：
@@ -43,6 +46,36 @@ isalpla()
 startswith() 
 endswith(shffix, beg=0, end=len(string))  # 注意end与with之间还有一个字母s
 
+
+## 正则表达式
+import re
+
+正则表达式修饰符（常用）：
+re.I??
+re.M
+re.S
+
+^   # 开头
+$   # 末尾
+.   # 任意字符，除换行符外
+[...] # 一组字符，如[abc]为'a','b','c'
+[^...] # 除[]里的字母外
+re* # 0或多个
+re+ # 1或多个
+re? # 
+a|b # a或b
+[0-9] # 所有数字
+[a-zA-Z] # 所有字母
+
+内置函数
+re.match(pattern, string, flags=0)
+- 通过.group(0)获得整个字符 或 .group(1..)具体索引来获取第几个字符串，从1开始
+re.search(pattern, string, flags=0)
+re.sub(pattern, repl, string, count=0, flags=0)
+re.compile()
+re.findall() # 返回list
+re.finditer()
+re.split() # ?
 
 
 
