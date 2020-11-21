@@ -20,5 +20,14 @@ in 如果字符串中包含给定的字符则返回True
 not 如果字符串中不包含给定的字符则返回True
 r/R 原始字符串,用法：r"123123\123\123"里面的字符不会被转义，常常用在路径的书写
 
+字符串格式化：
+"%d%d"%(1, 2)
+"{},{}".format(a, b)
+f"hello, {name}"  # name为变量，直接嵌入在字符串中
+
+常用的字符串内置函数：(每个都需要添加一个例子)
+count(str, beg=0, end=len(string))
+endwith(shffix, beg=0, end=len(string))
+
 
 
