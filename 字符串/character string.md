@@ -229,47 +229,60 @@ span([group]) 方法返回 (start(group), end(group))。
 #### easy
 ```python
 # leetcode-13
-dict = {}  # 里面要补题目写的罗马数字
-sum = dict[s[0]]
-n = 1
-while n < l:
-  if dict[s[n]] > dict[s[n-1]]:
-    sum -= dict[s[n-1]]
-    sum += (dict[s[n]] - dict[s[n-1]])
-  else:
-    sum += dict[s[n]]
+class Solution(object):
+    def romanToInt(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        dict = {"I":1, "V":5, "X":10, "L":50, "C":100, 
+                "D":500, "M":1000}  
+        sum = dict[s[0]]
+        l = len(s)
+        n = 1
+        while n < l:
+            if dict[s[n]] > dict[s[n-1]]:
+                sum -= dict[s[n-1]]
+                sum += (dict[s[n]] - dict[s[n-1]])
+            else:
+                sum += dict[s[n]]
+            n += 1
+        return sum
  
 # leetcode-14
-s1 = string[0]
-out = [s for s in s1]
-for s in string[1:]:
-  n = 0
-  while n < len(out):
-    if s[n] == out[n]:
-      n += 1
-    else:
-      out = out[:n]
-return "".join(out)
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if len(strs) == 0:
+            return ""
+        s1 = strs[0]
+        out = [s for s in s1]
+        for s in strs[1:]:
+            n = 0
+            while n < len(out) and n < len(s):
+                if s[n] == out[n]:
+                    n += 1
+                else:
+                    break
+            out = out[:n]
+        return "".join(out)
+
+# leetcode-28
+class Solution(object):
+    def strStr(self, haystack, needle):
+        """
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        """
+        return haystack.find(needle)
 
 # leetcode-38
 
-# leetcode-28
-return haystack.find(needle)
 
-# leetcode-3,再看看题解其实思路是一样的，但是题解的写法比较高级一点吧
-maxlist = []
-tmp = []
-for c in s:
-  if c in tmp:
-    if len(tmp) > len(maxlist):
-      maxlist = tmp[:]
-    id = tmp.index(c)
-    tmp  =tmp[id+1:]
-  else:
-    tmp.append(c)
-if len(tmp) > len(mxalist):
-  maxlist = tmp[:]
-return len(mxalist)
 
 leetcode-125-已通过使用了内置函数去处理字符串，还是挺简洁的
 class Solution(object):
@@ -298,6 +311,29 @@ class Solution(object):
 
 ### mid
 ```python
+# leetcode-3,再看看题解其实思路是一样的，但是题解的写法比较高级一点吧
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        maxlist = []
+        tmp = []
+        for c in s:
+            if c in tmp:
+                if len(tmp) > len(maxlist):
+                    maxlist = tmp[:]
+                id = tmp.index(c)
+                tmp.append(c)
+                tmp = tmp[id+1:]
+            else:
+                tmp.append(c)
+        if len(tmp) > len(maxlist):
+            maxlist = tmp[:]
+        return len(maxlist)   # 还可以改进一下，比如不需要存储最大值的情况
+
 
 # leetcode-5 看题解
 ```
+
