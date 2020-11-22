@@ -94,37 +94,136 @@ print (str.split('w'))     # 以 w 为分隔符
 
 
 ### [正则表达式](https://www.runoob.com/regexp/regexp-tutorial.html)
-import re
+- import re # regular expression
 
 #### 正则表达式修饰符（常用）：
-re.I??
-re.M
-re.S
-
+- re.I 不区分大小写
+- re.M 多行匹配，影响^和$
+- re.S 使.匹配包括换行符在内的所有字符(原本.不能匹配换行符\n的)
+```
+(还有很多标志位，具体使用到了再去查)
 ^   # 开头
 $   # 末尾
-.   # 任意字符，除换行符外
-[...] # 一组字符，如[abc]为'a','b','c'
+.   # 任意字符，除换行符外；当re.DOTALL标记被指定时，则可匹配所有字符
+[...] # 一组字符，如[abc]为'a'or'b'or'c',要是其中的一种字母
 [^...] # 除[]里的字母外
+() # 表示最后只需要括号内的部分，其他辅助匹配的就不需要了
 re* # 0或多个
 re+ # 1或多个
-re? # 
+re? # 匹配0个或1个  由前面的正则表达式定义的片段，非贪婪方式？？
 a|b # a或b
 [0-9] # 所有数字
 [a-zA-Z] # 所有字母
 
-#### 内置函数
-- re.match(pattern, string, flags=0) # 从字符串起始位置匹配pttern，成功则返回匹配对象，不成功则返回None
-- 返回的匹配对象使用group(num) 或 grous()
-```python
+## 单个字符
+. 匹配除 "\n" 之外的任何单个字符
+\d	匹配一个数字字符。等价于 [0-9]
+\D	匹配一个非数字字符。等价于 [^0-9]
+\s	匹配任何空白字符，包括空格、制表符、换页符等等。等价于 [ \f\n\r\t\v]
+\w	匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'
+如果是大写就是不取
+```
 
+#### 内置函数
+- 与python中set搭配使用可以去重
+
+- re.match()与re.search()的区别是match是从头开始匹配，如果开始部分不匹配则后面则不会去匹配了, 而search是匹配整个字符的
+- re.match(pattern, string, flags=0) # 从字符串起始位置匹配pttern，成功则返回匹配对象，不成功则返回None
+- pattern匹配的正则表达式； string要匹配的字符串; flags 标志位，如是否区分大小写re.
+- 返回的匹配对象使用group(num); .group(0)是完整的匹配的字符串，包括辅助的字符串等; .group(1 or ..)则是每一个特定部分的匹配项
+```python
+import re
+line = "Cats are smarter than dogs"
+matchObj = re.match( r'([A-Z]a[a-z]*) ', line)
+print(matchObj.group(0))   # 输出: 'Cats '  注意是包含后面的空格的，即上面匹配的式子
+print(matchObj.group(1))   # 输出: 'Cats' 而这里是没有空格了，只是括号内的匹配字符
+
+line = "Cats are smarter than dogs"
+searchObj = re.search( r'(.*) are (.*?) .*', line, re.M|re.I)
+if searchObj:
+   print ("searchObj.group() : ", searchObj.group())
+   print ("searchObj.group(1) : ", searchObj.group(1))
+   print ("searchObj.group(2) : ", searchObj.group(2))  # 注意没有第3，是因为第三部分是没有括号吗？
+else:
+   print ("Nothing found!!")
+# 输出:
+# searchObj.group() :  Cats are smarter than dogs  # 因为上面最后是.*一直会匹配到换行符
+# searchObj.group(1) :  Cats
+# searchObj.group(2) :  smarter
+
+# 如果是这样：
+matchObj = re.match( r'(.*) are (.*?) (.*)', line, re.M|re.I)
+# 则会有第三个输出
+# matchObj.group(3) :  than dogs
 ```
 - re.search(pattern, string, flags=0)
 - re.sub(pattern, repl, string, count=0, flags=0)
-- re.compile()
-- re.findall() # 返回list
+```python
+import re
+phone = "2004-959-559 # 这是一个电话号码"
+# 删除注释
+num = re.sub(r'#.*$', "", phone)   # #匹配字符，.*中间有0个或多个字符,$尾部匹配
+print ("电话号码 : ", num)
+# 移除非数字的内容
+num = re.sub(r'\D', "", phone)   # 匹配非数字的字符
+print ("电话号码 : ", num)
+
+# 输出：
+# 电话号码 :  2004-959-559 
+# 电话号码 :  2004959559
+```
+- re.compile(pattern[, flags]) # 用于编译正则表达式，生成一个正则表达式（ Pattern ）对象，供 match() 和 search() 这两个函数使用
+- 疑惑：为什么需要compile来编译呢？
+```python
+>>>import re
+>>> pattern = re.compile(r'\d+')                    # 用于匹配至少一个数字
+>>> m = pattern.match('one12twothree34four')        # 查找头部，没有匹配
+>>> print( m )
+None
+>>> m = pattern.match('one12twothree34four', 2, 10) # 从'e'的位置开始匹配，没有匹配
+>>> print( m )
+None
+>>> m = pattern.match('one12twothree34four', 3, 10) # 从'1'的位置开始匹配，正好匹配
+>>> print( m )                                        # 返回一个 Match 对象
+<_sre.SRE_Match object at 0x10a42aac0>
+>>> m.group(0)   # 可省略 0
+'12'
+>>> m.start(0)   # 可省略 0
+3
+>>> m.end(0)     # 可省略 0
+5
+>>> m.span(0)    # 可省略 0
+(3, 5)
+在上面，当匹配成功时返回一个 Match 对象，其中：
+
+'''解释
+group([group1, …]) 方法用于获得一个或多个分组匹配的字符串，当要获得整个匹配的子串时，可直接使用 group() 或 group(0)；
+start([group]) 方法用于获取分组匹配的子串在整个字符串中的起始位置（子串第一个字符的索引），参数默认值为 0；
+end([group]) 方法用于获取分组匹配的子串在整个字符串中的结束位置（子串最后一个字符的索引+1），参数默认值为 0；
+span([group]) 方法返回 (start(group), end(group))。
+'''
+```
+
+- re.findall(pattern, string, flags=0)  # 找到所有符合pattern的内容，返回list
+- or pattern.findall(string, pos, endpos)
+```python
+
+```
 - re.finditer()
-- re.split() # ?
+- re.split() # 
+```python
+# 看着相似找出符合的部分然后返回一个list，这样个findall好像功能差不多？
+>>>import re
+>>> re.split('\W+', 'runoob, runoob, runoob.')
+['runoob', 'runoob', 'runoob', '']
+>>> re.split('(\W+)', ' runoob, runoob, runoob.') 
+['', ' ', 'runoob', ', ', 'runoob', ', ', 'runoob', '.', '']
+>>> re.split('\W+', ' runoob, runoob, runoob.', 1) 
+['', 'runoob, runoob, runoob.']
+ 
+>>> re.split('a*', 'hello world')   # 对于一个找不到匹配的字符串而言，split 不会对其作出分割
+['hello world']
+```
 
 ## leetcode
 #### easy
