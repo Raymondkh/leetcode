@@ -40,6 +40,129 @@
   1. 叶子结点只能分布在倒数第一第二层
   2. 对任一结点,如果其右子树的最大层次为i,则其左子树的最大层次必为i或i+1
   
+### 二叉树的存储方式
+1. 顺序储存（数组）
+- 优点：便于查找，可以通过计算直接获得元素
+- 缺点：除了满二叉树和完全二叉树之外，空间利用率不高，且数组的大小是固定的
+- 用途：堆
+
+2. 二叉链表（lchild+data+rchild）
+
+3. 三叉链表（lchild+data+parent+rchild）：适用于查找双亲节点比较多的情况
+
+
+### 二叉树的遍历
+1. 遍历：顺着一条路径去访问二叉树的所有节点，每个节点只访问一次
+2. 访问：定义很广，可以是对节点的各种处理，比如输出、修改等，但是访问不能破坏原来的数据结构
+3. 目的：目的得到所有节点的线性排列
+4. 用途：对树结构的插入删除修改查找等操作
+5. 注意：每一个子树都是一个二叉树（根节点，左子树，右子树），使用递归遍历时需要明白这一点
+- [代码资料](https://blog.csdn.net/coxhuang/article/details/90547520)
+
+#### 先序遍历（根-->左子树-->右子树）
+```python
+class TreeNode:
+    def __init__(self, x):
+        self.data = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def preorder_recursion(self, root):
+        """递归方法"""
+        if not root:  # 如果根节点为空则不操作
+            return 
+        print(root.data)
+        self.preorder_recursion(root.left)
+        self.preorder_recursion(root.right)
+
+    def preorder(self, root):
+        """非递归的方法实现,还不太熟悉"""
+        stack_node = [root]  # 栈
+        list_node = [] # 先序遍历结果存放列表
+
+        while stack_node:
+            node = stack.pop() # 栈顶节点出栈
+            if not node:
+                continue
+            list_node.append(node.data)
+            # 先压入右节点，栈的特点先入后出
+            stack_node.append(node.right)  
+            # 再压入左节点
+            stack_node.append(node.left)
+        print(list_node)
+        return list_node
+```
+#### 中序遍历（左子树-->根-->右子树）
+```python
+class TreeNode:
+    def __init__(self, x):
+        self.data = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def inorder_recursion(self, root):
+        """递归方法"""
+        if root == None:
+            return 
+        self.inorder_recursion(root.left)
+        print(root.data)
+        self.inorder_recursion(root.right)
+
+    def inorder(self, root):
+        """非递归的方法实现,还不太熟悉"""
+        stack_node = [root]  # 栈
+        list_node = [] # 中序遍历结果存放列表
+        node_p = root # 当前节点
+
+        while stack_node or node_p: # 当前节点不为空或栈不为空
+            while node_p: # 一直移动到最左端
+                stack_node.append(node_p) # 节点压栈
+                node_p = node_p.left # 指针左移
+            node = stack_node.pop() # 出栈
+            list_node.append(node.data) # 获取节点数据
+            node_p = node.right # 获取右节点
+        print(list_node)
+        return list_node
+```
+#### 后序遍历（左子树-->右子树-->根）
+```python
+class TreeNode:
+    def __init__(self, x):
+        self.data = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def postorder_recursion(self, root):
+        """递归方法"""
+        if root == None:
+            return 
+        self.postorder_recursion(root.left)
+        self.postorder_recursion(root.right)
+        print(root.data)
+
+    def postorder(self, root):
+        """非递归的方法实现,还不太熟悉"""
+        stack_node = [root]  # 栈
+        list_node = [] # 遍历结果存放列表
+
+        while stack_node: 
+            node = stack.pop()
+
+            if node.left: # 左孩子不为空
+                stack_node.append(node.left) # 左孩子压栈
+            if node.right: # 右孩子不为空
+                stack_node.append(node.right) # 右孩子压栈
+            list_node.append(node.data)
+        list_node.reverse() # 取反
+        return list_node
+```
+
+
+
+  
 
 
 
