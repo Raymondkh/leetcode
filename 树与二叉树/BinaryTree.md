@@ -119,7 +119,7 @@ class Solution:
         while stack_node or node_p: # 当前节点不为空或栈不为空
             while node_p: # 一直移动到最左端
                 stack_node.append(node_p) # 节点压栈
-                node_p = node_p.left # 指针左移
+                node_p = node_p.left # 继续向左子树访问
             node = stack_node.pop() # 出栈
             list_node.append(node.data) # 获取节点数据
             node_p = node.right # 获取右节点
@@ -159,6 +159,40 @@ class Solution:
         list_node.reverse() # 取反
         return list_node
 ```
+#### 层次遍历（一层一层从上到下，从左到右来访问）
+```python
+class TreeNode:
+    def __init__(self, x):
+        self.data = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def levelorder(self, root):
+        """层次遍历"""
+        queue_node = [root] # 队列实现,循环链表实现？
+        list_node = [] # 保存结果
+
+        while queue_node: # 队列不为空，一直训练
+            node = queue_node.pop() # 出队
+            if not node: # 节点为空，从头开始，不把空节点放入结果list
+                continue
+            list_node.append(node.data)
+            queue_node.insert(0, node.left)   # 如果使用colletions.deque模块会不会好一点？
+            queue_node.insert(0, node.right)
+        print(list_node)
+        return list_node
+```
+
+#### 确定唯一的二叉树
+1. 先序遍历结果+中序遍历结果
+2. 后序遍历结果+中序遍历结果
+
+#### 二叉树遍历算法的应用
+1. 二叉树的建立
+- 使用先序遍历来创建二叉树，但是仅靠先序遍历来创建的二叉树不是唯一的，所以输入的序列表补充空节点的，将其补成一个完全二叉树的序列之后在使用先序遍历来创建二叉树
+
+
 
 
 
