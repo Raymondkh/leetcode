@@ -238,7 +238,131 @@ class Solution:
 
 #### 森林的遍历
 
-### 哈夫曼树
+### 哈夫曼树（最优二叉树）
+
+#### 基本概念
+1. 路径：从树中一个节点到另一个节点之间的分支构成两节点之间的路径
+2. 结点的路径长度：两节点路径上的分支树（线段数）
+3. 树的路径长度：从树根到每一个结点的路径长度之和，记作：TL
+  - 结点数目相同的二叉树中，完全二叉树是路径长度最短的二叉树
+4. 权(weight):将树中结点赋给一个有着某种含义(视具体情况而定)的数值
+5. 结点的带权路径长度：从根结点到该结点之间的路径长度与该结点的权的乘积
+6. 树的带权路径长度：树中所有叶子结点的带权路径长度之和（注意是到叶子结点，而不是全部结点）
+---> 哈夫曼树：最优树：带权路径长度WPL最短的树
+      - 注意“带权路径长度最短”是在“度相同”的树中比较而得的结果，因此有最优二叉树、最优三叉树之称
+      - 满二叉树不一定是哈夫曼树
+      - 哈夫曼树中权越大的叶子离根越近
+      - 具有相同带权结点的哈夫曼树不唯一（不止一个最优解）
+      - 疑惑：这样能计算比较出最优树，那如何去获得最优树的形态呢？
+       - 方法--->贪心算法：构造哈夫曼树时首先选择权值小的叶子结点
+ 
+ #### 哈夫曼树的构造算法
+ 1 根据n个给定的权值w1,w2,w3...,wn构成n棵二叉树的森林，F={T1,T2,...Tn}，Ti
+ 只有一个带权为wi的根结点-->构造森林全是根
+ 2. 在F中选取两棵根结点的权值最小的树作为左右字数，构造一棵新的二叉树，且设置新的二叉树的根结点的权值为其左右子树上根结点的权值之和--->选用两小造新树
+ 3. 在F中删除这两棵树，同时将得到的二叉树加入森林中--->删除两小添新人
+ 4. 重复2和3，直到森林中只有一棵树为止，这棵树就是哈夫曼树
+ - 哈夫曼树的结点的度数只有0或2，没有度为1的结点  
+ - 包含n个叶子结点的哈夫曼树中共有2n-1个结点
+ - 包含n棵树的森林要经过n-1次合并才能形成哈夫曼树，共产生n-1个新结点(是度为2的结点)
+ 
+ #### 算法实现
+ 1. 顺序储存结构---一维结构数组
+ 2. 链表
+ ```python
+ class Node(object):
+    def __init__(self, name=None, value=None):
+        self._name = name
+        self._value = value  # weight
+        self._left = None
+        self._right = None
+
+class HuffmanTree(object):
+    def __init__(self, char_weight):
+        # 根据输入的字符及其权重生成叶子结点
+        self.a = [Node(part[0], part[1] for part in char_weight)]
+        while len(self.a) != 1:
+            # True为降序
+            self.a.sort[key=lambd node:node._value, reverse=True]
+            # 选用两小造新树，删除两小添新人
+            c = Node(value=(self.a[-1]._value + self.a[-2]._value))
+            c._left = self.a.pop(-1) # 
+            c._right = self.a.pop(-1)
+            self.a.append(c)
+        self.root = self.a[0]
+ ```
+ 
+#### 哈夫曼编码
+1. 若将编码设计为长度不等的二进制编码，即让待传字符串中出现次数较多的字符采用尽可能短的编码，则转换的二进制字符串遍可能减少
+2. 重码问题，解决关键：要设计长度不等的编码，则必须使任意字符的编码都不是另一个字符编码的前缀--前缀编码
+3. 问题：什么样的前缀码能使得电文总长最短？--哈夫曼编码
+   - 方法：
+     1. 统计字符集中每个字符在电文中出现的平均概率（或是频率？）（概率越大，要求编码越短）
+     2. 利用哈夫曼树的特点：权越大的叶子离跟越近，将每个字符的概率值作为权值，构造哈夫曼树，则概率越大的结点，路径越短
+     3. 在哈夫曼树的每个分支上标0或1：结点的左分支标0，右分支标1，把从根到每个叶子的路径上的标号连接起来，作为该叶子代表的字符的编码
+4. 问题
+  1. 为什么哈夫曼编码能够保证是前缀编码？因为从哈夫曼树来看，路径都是唯一的，不会有哪个路径会经过两个字符
+  2. 为什么哈夫曼编码能够保证字符编码总长最短？因为哈夫曼编码的带权路径长度最短，故字符编码的总长最短
+
+5. 性质：
+  1. 哈夫曼编码是前缀码
+  2. 哈夫曼编码是最优前缀码
+```python
+class Node(object):
+    def __init__(self, name=None, value=None):
+        self._name = name
+        self._value = value  # weight
+        self._left = None
+        self._right = None
+
+class HuffmanTree(object):
+    def __init__(self, char_weight):
+        # 根据输入的字符及其权重生成叶子结点
+        self.a = [Node(part[0], part[1]) for part in char_weight]
+        while len(self.a) != 1:
+            # True为降序
+            self.a.sort(key=lambda node:node._value, reverse=True)
+            # 选用两小造新树，删除两小添新人
+            c = Node(value=(self.a[-1]._value + self.a[-2]._value))
+            c._left = self.a.pop(-1) # 
+            c._right = self.a.pop(-1)
+            self.a.append(c)
+        self.root = self.a[0]
+        self.b = [i for i in range(10)] # self.b用来保存每个叶子结点的haffman编码结果
+        
+    # 用递归的思想生成编码
+    def pre(self, tree, length):
+        node = tree
+        if not node:
+            return # 如果树为空则直接返回
+        elif node._name:  # 到达叶子结点的时候_name就不为空则为真
+            out = "".join([str(self.b[i]) for i in range(length)])
+            print(node._name + "的编码是：" + out)
+            return 
+        self.b[length] = 0  # 左子树为0
+        self.pre(node._left, length+1)
+        self.b[length] = 1  # 右子树为1
+        self.pre(node._right, length+1)    
+    
+    def get_code(self):
+        self.pre(self.root, 0)
+        
+if __name__ == "__main__":
+    #输入的是字符及其频数
+    char_weights=[('a',5),('b',4),('c',10),('d',8),('f',15),('g',2)]
+    tree=HuffmanTree(char_weights)
+    tree.get_code()
+```
+
+
+     
+ 
+ 
+ 
+        
+      
+
+
 
 
     
