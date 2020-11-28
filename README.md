@@ -12,3 +12,7 @@
  ### 资料：
 1. [cy69855522 github](https://github.com/cy69855522/Shortest-LeetCode-Python-Solutions#%E4%B8%93%E9%A2%98%E6%8E%A2%E7%B4%A2)
 2. [python的菜鸟教程](https://www.runoob.com/python/python-tutorial.html)
+
+
+day1
+1. 图的内容(所有视频和代码整理，暂时没那么理解也没关系，可以整理好上班的时候来零碎的理解并写出感悟)--完成截止时间11.29日早上8点前。
