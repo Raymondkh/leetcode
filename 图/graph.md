@@ -386,6 +386,7 @@ for i in range(graph.number):
 1. 发现这两种结构最后都只需要与顶点和边的数量一致，也就是最少的情况，当然另外还需要额外的空间存储链接
 
 #### 深度优先遍历
+- [过程理解](https://blog.csdn.net/weixin_40953222/article/details/80544928?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control)
 - 概念：
 - 代码实现（多种情况）：
 1. 邻接表
