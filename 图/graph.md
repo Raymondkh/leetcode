@@ -154,6 +154,26 @@ int LocateVex(AMGraph G, VextexType u) {
 
 }
 ```
+```python
+class AdjacencyMatrix(object):
+	def __init__(self, number):
+		self.number = number
+		self.list = [[None] * number for i in range(number)]
+		
+	# insert node
+	def insert(self, origin, index, weight=1):
+		self.list[origin - 1][index - 1] = weight
+# 测试代码
+graph = AdjacencyMatrix(5)
+graph.insert(1, 2)
+graph.insert(1, 3)
+graph.insert(1, 4)
+graph.insert(2, 3)
+graph.insert(3, 1)
+graph.insert(3, 5)
+graph.insert(4, 3)
+print(graph.list)
+```
 #### 邻接矩阵的优缺点
 1. 优点
     1. 直观简单好理解
@@ -208,6 +228,135 @@ class 图：
     将此边结点分别出入vi和vj对应的两个边链表的头部(因为是无向表所以两个顶点要分别插入，如果是有向图则只需插入一次）
 
 ```
+```python
+# 实现1：https://www.cnblogs.com/gtscool/p/12584117.html
+class Vertext():  # 包含顶点信息以及顶点连接边
+	def __init__(self, key):
+		# key是添加的顶点
+		self.id =  key
+		self.connectedto = {} # 初始化邻接表
+		
+	def addneighbor(self, nbr, weight=0):
+		# 添加权重之邻接点
+		self.connectedto[nbr] =   weight
+		
+	def getconnections(self):
+		# 得到这个顶点所连接的其他所有顶点
+		return self.connectedto.keys()
+	
+	def getid(self):
+		# 返回当前顶点
+		return self.id
+	
+	def getweight(self, nbr):
+		#  返回所邻接顶点nbr的权重
+		return self.connectedto[nbr]
+	
+class Graph():
+	"""
+	图-->由顶点构成，包含一个邻接表
+	{
+		key:Vertext(){
+				self.id = key
+				self.connectedto{
+						邻接顶点实例:权重
+						...(多个邻接顶点   )
+					}
+			}
+		...(所有顶点s)
+	}
+	"""
+	def __init__(self):
+		self.verlist = {}    # 邻接表
+		self.num = 0 # 顶点的个数
+	
+	def addvertext(self, key):
+		# 添加顶点
+		self.num += 1  #  顶点个数累加 
+		newvertext = Vertext(key)  # 创建顶点
+		self.verlist[key] = newvertext 
+		return newvertext
+	
+	def getvertext(self, n):
+		# 通过key来查找顶点
+		if n in self.verlist:
+			return self.verlist[n]
+		else:
+			return None
+		
+	def __contains__(self,  n):
+		#  transition包含-->返回查询顶点是否存在于图中
+		return n in self.verlist
+	
+	def addedge(self, f, t, cost=0):
+		# 添加一条边
+		if f not in self.verlist:
+			# 如果没有边就创造一条边
+			nv = self.addvertext(f)
+		if t not in self.verlist:
+			nv = self.addvertext(t)
+			
+		if cost == 0:
+			# cost == 0 代表是没有传入参数，而使用默认参数0，即是无向图
+			self.verlist[f].addneighbor(self.vetlist[t], cost) # cost是权重
+			self.verlist[t].addneighbor(self.verlist[f], cost)
+		else:
+			self.verlist[f].addneighbor(self.verlist[t],cost) # 有向图权重
+			
+	def getvertices(self):
+		# 返回图中所有顶点
+		return self.verlist.keys()
+	
+g = Graph()
+g.addedge(0,5,2)
+g.addedge(1,2,4)
+g.addedge(2,3,9)
+g.addedge(3,4,7)
+g.addedge(3,5,3)
+g.addedge(4,0,1)
+g.addedge(5,4,8)
+g.addedge(5,2,1)
+
+print(g.getvertices())
+print(g.verlist)
+print(type(g.verlist))
+for k, v in g.verlist.items():
+	for w in v.getconnections(): # 获得类实例的connectedTO
+        # print(w)
+		print("({},{}:{})".format(v.getid(), w.getid(), v.getweight(w)))
+
+# 实现2:https://www.jianshu.com/p/ce4109962031
+class Node(object):
+	def __init__(self, index, weight, next=None):
+		self.index = index
+		self.weight = weight
+		self.next = next
+		
+class AdjacencyList(object):
+	def __init__(self, number):
+		self.number = number
+		self.list = [None] * number
+		
+	def insert(self, origin, index, weight=1):
+		node = Node(index, weight, self.list[origin-1])
+		self.list[origin-1] = node
+		
+graph = AdjacencyList(5)
+graph.insert(1, 2)
+graph.insert(1, 3)
+graph.insert(1, 4)
+graph.insert(2, 3)
+graph.insert(3, 1)
+graph.insert(3, 5)
+graph.insert(4, 3)
+for i in range(graph.number):
+	print('node', (i + 1), 'links:', end = ' ')
+	node = graph.list[i]
+	while node:
+		print(node.index, end = ' ')
+		node = node.next
+		print()
+```
 #### 邻接表的优缺点
 1. 优点：
     1. 方便找任意顶点的所有邻接点
@@ -236,8 +385,25 @@ class 图：
 #### 邻接多重表、十字链表
 1. 发现这两种结构最后都只需要与顶点和边的数量一致，也就是最少的情况，当然另外还需要额外的空间存储链接
 
+#### 深度优先遍历
+- 概念：
+- 代码实现（多种情况）：
+1. 邻接表
+2. 邻接矩阵
+3. 无向图和有向图（两者的代码有什么区别吗？）
+4. 二叉树
+6. 树
+#### 广度优先遍历
+- 概念：
+- 代码实现（多种情况）：
+1. 邻接表
+2. 邻接矩阵
+3. 无向图和有向图（两者的代码有什么区别吗？）
+4. 二叉树
+6. 树
 
-
+### 图的应用
+#### 最小生成树·
 
     
     
