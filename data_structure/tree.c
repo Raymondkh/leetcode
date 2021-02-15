@@ -364,11 +364,12 @@ Node *build(const char *str, int *node_num) {
                 flag = 0;
             } break;
             case ')': {
-                p = top(s); // 这里为什么要记录，有一种特殊情况
+                p = top(s); 
+		// 这里为什么要记录，有一种特殊情况,用于存放之后一个根节点
                 pop(s);
             } break;
             case ',': {
-                flag = 1;
+                flag = 1;  // 经过,号则为右孩子
             } break;
             case ' ': break;
             default:
@@ -378,7 +379,7 @@ Node *build(const char *str, int *node_num) {
             } else if (!empty(s) && flag == 1) {
                 top(s)->rchild = temp;
             }
-            ++(*node_num);
+            ++(*node_num);  // 记录节点数的增加
             break;
 
         }
