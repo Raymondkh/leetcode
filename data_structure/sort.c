@@ -25,8 +25,6 @@
     free(num);\
 }
 
-
-
 // 插入排序
 void insert_sort(int *num, int n) {
     for (int i = 1; i < n; i++) {
@@ -114,3 +112,110 @@ int main() {
     #undef MAX_N
     return 0;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+	> File Name: 10.unstable_sort.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Tue 16 Feb 2021 09:03:21 AM CST
+ ************************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#define swap(a, b) {\
+    __typeof(a) __temp = a; \
+    a = b; b = __temp; \
+}
+
+#define TEST(arr, n, func, args...) {\
+    int *num = (int *)malloc(sizeof(int) * n);\
+    memcpy(num, arr, sizeof(int) * n);\
+    output(num, n); \
+    printf("%s = ", #func);\
+    func(args);\
+    output(num, n);\
+    free(num);\
+}
+
+
+// 选择排序
+void select_sort(int *num, int n) {
+    for (int i = 0; i < n - 1; i++) { // 一共进行n-1轮对比，因为最后剩一个即完成了
+        int ind = i; // 最小值的坐标存储
+        for (int j = i + 1; j < n; j++) {  // 遍历比较待排序区
+            if (num[j] < num[ind]) ind = j; // 若有更小的值则交换坐标
+        }
+        swap(num[i], num[ind]);
+    }
+    return ;
+}
+
+// 快速排序, 递归实现，有监督，监督体现在移动y, x需要while(x < y)
+void quick_sort(int *num, int l, int r) {
+    if (l > r) return ;
+    int x = l, y = r, z = num[x]; // 基准值一般是第一个值
+    while (x < y) {
+        while (x < y && num[y] > z) y--;
+        if (x < y) num[x++] = num[y];
+        while (x < y && num[x] < z) x++;
+        if (x < y) num[y--] = num[x];
+    }
+    num[x] = z; // 最后x = y是即完成一次
+    quick_sort(num, l, x - 1);
+    quick_sort(num, x + 1, r);
+    return ;
+}
+
+// 优化版快速排序, 无监督的算法，无监督比有监督的要快
+void quick_sort_s(int *num, int l, int r) {
+    
+    while (l < r) {
+        int x = l, y = r, z = num[(l + r) >>1];
+        do {
+            while (num[x] < z) x++;
+            while (num[y] > z) y--;
+            if (x <= y) {
+                swap(num[x], num[y]);
+                x++, y--;
+            }
+        } while (x <= y);
+        quick_sort_s(num, l, y); // 左侧是递归
+        l = x; // 右侧是循环
+    }
+    return ;
+}
+
+void randint(int *arr, int n) {
+    while (n--) arr[n] = rand() % 100;
+    return ;
+}
+
+void output(int *arr, int n) {
+    printf("[");
+    for (int i = 0; i < n; i++) {
+        i && printf(" ");
+        printf("%d", arr[i]);
+    }
+    printf("]\n");
+    return ;
+}
+
+int main() {
+    srand(time(0));
+    #define MAX_N 20
+    int arr[MAX_N];
+    randint(arr, MAX_N);
+    TEST(arr, MAX_N, select_sort, num, MAX_N);
+    TEST(arr, MAX_N, quick_sort, num, 0, MAX_N - 1);
+    TEST(arr, MAX_N, quick_sort_s, num, 0, MAX_N - 1);
+    #undef MAX_N
+    return 0;
+}
+
+
+
+
