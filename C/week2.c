@@ -32,9 +32,13 @@ int ex_gcd(int a, int b, int *x, int *y) {
         *x = 1, *y = 0;
         return a;
     }
-    int xx, yy, ret = ex_gcd(b, a % b, &xx, &yy);
-    *x = yy;
-    *y = xx - a / b * yy;
+    //int xx, yy, ret = ex_gcd(b, a % b, &xx, &yy);
+    //*x = yy;
+    //*y = xx - a / b * yy;
+    //printf("ret = %d\n", ret);
+    // 可以简化不用xx, yy 变量
+    int ret = ex_gcd(b, a % b, y, x);    
+    *y -= a / b * (*x);    // 这里还不是很理解，没绕过来！！！
     return ret;
 }
 
