@@ -4,7 +4,7 @@
 	> Mail: 
 	> Created Time: Thu 25 Feb 2021 05:43:00 PM CST
  ************************************************************************/
-// 素数筛！！
+// 素数筛
 #include <stdio.h>
 #define max_n 100  // 便于灵活调整
 
@@ -31,8 +31,18 @@ void init() {
         prime[++prime[0]] = i;
         // prime[0]用来记录素数的个数， 将素数按着个数顺序存放
         // 在是素数的时候就移动到前面去
-        for (int j = i * 2; j <= max_n; j+=i) {
-            prime[j] = 1;
+        //for (int j = i * 2; j <= max_n; j+=i) {
+        //    prime[j] = 1;
+        //}
+        //for (int j = i * i; j <= max_n; j += i) {
+        //    prime[j] = 1;
+            // 但是max_n = 100000时，j需要表示i*i的值会超过int能表示的值
+            // 此时j会变成负数，所以访问数组会出现段错误
+            // 所以i * i这部分问题还需要自己解决？？
+        //}
+        // 解决上面i*i爆栈的问题-->一种改法，不唯一，重点在于理解
+        for (int j = i; j <= max_n / i; j++) {
+            prime[j * i] = 1;
         }
     }
     return ;
@@ -48,3 +58,4 @@ int main() {
 
     return 0;
 }
+
