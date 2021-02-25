@@ -110,3 +110,50 @@ int main() {
 
     return 0;
 }
+
+
+/*************************************************************************
+	> File Name: 17.newtown.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Thu 25 Feb 2021 11:13:28 PM CST
+ ************************************************************************/
+
+
+#include <stdio.h>
+#include <math.h>
+
+double func(double x, double n) {
+    return  x * x - n;
+}
+
+double f(double x) {
+    return 2 * x;
+}
+
+double newton(double (*F)(double, double), double (*f)(double), double n) {
+    double x = n / 2.0; // 赋予初值
+    #define EPLS 1e-7
+    while (fabs(F(x, n)) > EPLS) {
+        x -= F(x, n) / f(x);
+    }
+    #undef EPLS
+    return x;
+
+}
+
+double my_sqrt(double n) {
+    return newton(func, f, n);
+}
+
+int main() {
+
+    double n;
+    while (~scanf("%lf", &n)) {
+        printf("sqrt(%g) = %g\n", n, sqrt(n));
+        printf("my_sqrt(%g) = %g\n", n, my_sqrt(n));
+    }
+
+    return 0;
+}
+
