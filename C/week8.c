@@ -211,3 +211,46 @@ int main() {
     return 0;
 
 }
+
+/*************************************************************************
+	> File Name: hzoj-172.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 26 Feb 2021 10:56:40 PM CST
+ ************************************************************************/
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#define MAX_N 20
+
+#define swap_str(a, b) {\
+    char *__temp = (char *)malloc(sizeof(char) * MAX_N);\
+    strcpy(__temp, a);\
+    strcpy(a, b);\
+    strcpy(b, __temp);\
+    free(__temp);\
+}
+
+void insert_sort(char name[][MAX_N + 5], int n) {
+    for (int i = 1; i < n; i++) {
+        for (int j = i; j >= 1; j--) {
+            if (strcmp(name[j], name[j - 1]) >= 0) break;
+            swap_str(name[j], name[j - 1]);
+        }
+    }
+    return ;
+}
+
+int main() {
+    char name[10][MAX_N + 5] = {0};
+    for (int i = 0; i < 10; i++) {
+        scanf("%s", name[i]);
+    }
+    insert_sort(name, 10);
+    for (int i = 0; i < 10; i++) {
+        printf("%s\n", name[i]);
+    }
+
+    return 0;
+}
