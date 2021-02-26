@@ -67,3 +67,31 @@ arr[1] = 16843009
 arr[0] = -1
 arr[1] = -1
 */
+
+
+/*************************************************************************
+	> File Name: 22.string.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 26 Feb 2021 09:20:59 PM CST
+ ************************************************************************/
+// 随堂练习4
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+
+    char str[11] = {0};
+    char str1[11] = {0};
+    int n;
+    while (~scanf("%d", &n)) {
+        sprintf(str, "%X", n);  // 将n以中间的格式输入到str中 %X是16进制
+        // %X 与 %x 的区别在于X时ABC， x是abc
+        printf("十六进制： %s has %lu digits!\n", str, strlen(str));
+        // strlen() 返回是无符号长整型
+        sprintf(str1, "%d", n);
+        printf("十进制： %s has %lu digits!\n", str1, strlen(str1));
+    }
+    return 0;
+}
+
