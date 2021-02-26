@@ -50,3 +50,47 @@ int main() {
     */
     return 0;
 }
+
+/*************************************************************************
+	> File Name: 20.LOG.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 26 Feb 2021 04:24:20 PM CST
+ ************************************************************************/
+
+#include <stdio.h>
+
+// 方法一：显式的去定义DEBUG  #define DEBUG 
+// 方法二：编译的时候g++ -DDEBUG 20.LOG.cpp 
+// 这样会帮你嵌入一个DEBUG宏
+
+#ifdef DEBUG
+#define log(frm, args...) {\
+    printf("[%s-->%s : %d]",__FILE__, __func__, __LINE__);\
+    printf(frm, ##args);\
+}
+// # 一个井号为名称化
+// ## 两个井号为连接，容许##args为空的情况
+// args这只是一个名字，不固定
+#else
+#define log(frm, args...) 
+// 如果没有定义DEBUG就替换为空，即将log语句全部替换为空
+#endif
+
+
+
+
+//#define contact(a, b) a##b  // 这个是正确的连接
+// #define contact(a, b) ab  // 这样不是链接，而是字符的拼接，报错的
+
+int main() {
+    int a = 123;
+    int abcdef = 0;
+    printf("hello kaikeba\n");
+    log("hello kaikeba\n");
+    log("%d\n", a);
+    //contact(abc, def) = 234;
+    log("%d\n", abcdef);
+    return 0;
+}
+
