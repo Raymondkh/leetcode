@@ -94,4 +94,56 @@ int main() {
     }
     return 0;
 }
+/*************************************************************************
+	> File Name: 22.string.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 26 Feb 2021 09:20:59 PM CST
+ ************************************************************************/
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    // 字符 int 同时循环读入是的问题
+    char ch;
+    int n;
+    while (~scanf("%c%d", &ch, &n)) {
+        printf("ch = %c, n = %d\n", ch, n);
+    }
+    /* 
+    结果出现下面这种乱码的现象
+    a 12
+    ch = a, n = 12
+    b 22
+    ch = 
+    , n = 12
+    ch = b, n = 22
+    c 32
+    ch = 
+    , n = 22
+    ch = c, n = 32
+    原因：%c是可以读入任意字符的，包括空格换行\t等，所以在输入的时候
+    并不能保证其读入的就是期望的字符
+    */
+
+    // 解决方法
+    char ch1[4] = {0};
+    int n1;
+    while (~scanf("%s%d", ch1, &n1)) {
+        printf("ch = %c, n = %d\n", ch1[0], n1);
+    }
+
+    /*
+    结果：
+    a 12
+    ch = a, n = 12
+    b 22
+    ch = b, n = 22
+    c 32
+    ch = c, n = 32 
+    */
+
+    return 0;
+}
 
