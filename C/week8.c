@@ -147,3 +147,67 @@ int main() {
     return 0;
 }
 
+/*************************************************************************
+	> File Name: hzoj-145.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 26 Feb 2021 10:31:36 PM CST
+ ************************************************************************/
+// 海贼oj题库的第145题
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_N 100
+
+int main() {
+    char str[20][MAX_N + 5] = {0};
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        scanf("%s", str[i]);
+    }
+    int ind = 0, len = 0;
+    for (int i = 0; i < n; i++) {
+        int temp = strlen(str[i]);
+        if (temp < len) continue;
+        len = temp;
+        ind = i;
+    }
+    printf("%s\n", str[ind]);
+}
+
+/*************************************************************************
+	> File Name: hzoj-145_1.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 26 Feb 2021 10:34:56 PM CST
+ ************************************************************************/
+
+#include <stdio.h>
+#include <string.h>
+#define MAX_N 100
+
+int main() {
+
+    char str[MAX_N + 5] = {0};
+    char ans[MAX_N + 5] = {0};
+    int n = 0, len = 0;
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        scanf("%s", str);
+        int temp = strlen(str);
+        if (temp < len) continue;
+        len = temp;
+        // strcpy(ans, str);
+        // strncpy(ans, str, MAX_N); 
+        // 但是我觉得这样每次都要拷贝全部，虽然安全但也有浪费
+        strncpy(ans, str, len);
+        // 只需要复制len刚好字符串的数量就好了，'\0'该函数会自动补上
+        
+    }
+    printf("len = %d, sizeof(str) = %lu, strlen(ans) = %lu\n", len, sizeof(str), strlen(ans));
+    printf("%s\n", ans);
+    return 0;
+
+}
