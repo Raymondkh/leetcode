@@ -35,3 +35,35 @@ int main() {
     
     return 0;
 }
+
+
+/*************************************************************************
+	> File Name: test.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Thu 25 Feb 2021 04:37:55 PM CST
+ ************************************************************************/
+// 测试memset的一些结果
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+
+    int arr[2];
+    memset(arr, 1, sizeof(arr));
+    for (int i = 0; i < 2; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+    memset(arr, -1, sizeof(arr));
+    for (int i = 0; i < 2; i++) {
+        printf("arr[%d] = %d\n", i, arr[i]); 
+    }
+    return 0;
+}
+/*
+输出结果：
+arr[0] = 16843009
+arr[1] = 16843009
+arr[0] = -1
+arr[1] = -1
+*/
