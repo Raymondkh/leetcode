@@ -140,3 +140,43 @@ int main() {
 
     return 0;
 }
+
+/*************************************************************************
+	> File Name: 25.pointer.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Sat 27 Feb 2021 04:19:32 PM CST
+ ************************************************************************/
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+//__attribute__((constructor))
+
+void output(int argc, char *argv[], char *env[]) {
+    
+    printf("argc = %d\n", argc);
+    for (int i = 0; i < argc; i++) {
+        printf("argv[%d] = %s\n", i, argv[i]);
+    }
+    for (int i = 0; env[i]; i++) {
+        if (!strncmp(env[i], "USER=", 5)) {
+            if (!strcmp(env[i] + 5, "username")) {
+                printf("welcome !\n");
+            } else {
+                printf("you are not the boss, please get out!\n");
+                exit(0);
+            }
+        }
+        printf("env[%d] = %s\n", i, env[i]);
+    }
+
+    return ;
+}
+
+int main(int argc, char *argv[], char *env[]) {
+    
+    output(argc, argv, env);
+    
+    return 0;
+}
