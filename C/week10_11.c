@@ -87,3 +87,56 @@ int main() {
     
     return 0;
 }
+
+
+/*************************************************************************
+	> File Name: 25.pointer.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Sat 27 Feb 2021 04:19:32 PM CST
+ ************************************************************************/
+
+#include <stdio.h>
+// 测试#define和typedef的区别
+#define ppchar char *
+typedef char * pchar; //注意这个是语句需要分号;!!!!
+
+/*
+#define offset(T, a) ({\
+    T temp;\
+    (char *)(&temp.a) - (char *)(&temp);\
+})
+// 用括号是因为可以将宏定义的最后一个表达式的值输出
+*/
+
+// 一种更优秀的方法
+#define offset(T, a)  ((long)(&(((T *)(NULL))->a)))
+
+// NULL <==> 0 <==> '\0' 三者等价
+
+
+struct Data {
+    int a;
+    double b;
+    char c;
+};
+
+int main() {
+
+    int num = 0x0626364;
+    printf("%s\n", (char *)(&num)); //  (char *)转化为字符串的形式
+    // 查看三个成员的地址偏移量  
+    printf("%ld\n", offset(struct Data, a)); 
+    // 这里用之所以没有预先定义是因为宏替换直接带入就能知道是结构体的成员
+    printf("%ld\n", offset(struct Data, b));
+    printf("%ld\n", offset(struct Data, c));
+    
+    pchar p1, p2;
+    ppchar p3, p4;
+    printf("p1 = %lu, p2 = %lu\n", sizeof(p1), sizeof(p2));
+    printf("p3 = %lu, p4 = %lu\n", sizeof(p3), sizeof(p4));
+    // p1 = 8, p2 = 8
+    // p3 = 8, p4 = 1
+
+    return 0;
+}
