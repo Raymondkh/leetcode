@@ -156,8 +156,10 @@ Vec *init(int n) {
 
 int expend(Vec *v) {
     int extr_size = v->size;
-    int *p;
+    int *p; // 中间变量，即使开辟不成功也不会丢失数据
     while (extr_size) {
+	    // 注意realloc函数的使用(源地址， 新的尺寸大小)
+	    // malloc函数使用(尺寸大小)
         p = (int *)realloc(v->data, sizeof(int) * (v->size + extr_size));
         if (p) break; // 开辟成功，p不是空地址则成功，注意此时extr_size可能为0
         extr_size >>= 1; // 开辟不成功则降低开辟空间大小
@@ -224,7 +226,7 @@ void output(Vec *v) {
 int main() {
     srand(time(0));
     #define max_op 20
-    Vec *v = init(5); // 初始化一个顺序表
+    Vec *v = it(5); // 初始化一个顺序表
     for (int i = 0; i < max_op; i++) {
         int val = rand() % 100; // 随机生成100以内的值
         int ind = rand() % (v->length + 3) - 1; // 范围在[-1, v->length + 1]
