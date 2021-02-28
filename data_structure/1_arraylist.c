@@ -51,6 +51,7 @@ int insert(Vec *v, int val, int ind) {
     if (v == NULL) return 0;
     if (ind < 0 || ind > v->length) return 0; // 插入的序号不规范
     if (v->length == v->size) return 0; // 顺序表已满
+	//需要注意v->length且编号是从0开始的，所以v->length是最后一位的下一位。
     for (int i = v->length; i > ind; i--) {
         v->data[i] = v->data[i - 1]; // 从后面开始移动，空出需要插入的序号
     }
@@ -61,6 +62,8 @@ int insert(Vec *v, int val, int ind) {
 
 int erase(Vec *v, int ind) {
     if (v == NULL) return 0;
+	if (v->length == 0) return 0; // 空的时候也无法删除
+	// 注意ind >= v->length 因为数组是从0开始的
     if (ind < 0 || ind >= v->length) return 0;
     for (int i = ind + 1; i < v->length; i++) {
         v->data[i - 1] = v->data[i];
@@ -102,6 +105,8 @@ int main() {
         // 负值，和大于v>lenght的值这类不正确的值来测试程序的鲁棒性
         int op = rand() % 2; // 0, 1表示插入or删除
         switch (op) {
+		 // 注意这里直接写数字0, 而不能是'0'，前者十进制为0，后者十进制为48
+		 // 是匹配十进制的
             case 0:
             case 1:
             case 2: {
