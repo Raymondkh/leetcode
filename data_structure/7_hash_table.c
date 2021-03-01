@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct Node {
     char *str;
     struct Node *next;  
@@ -31,6 +32,7 @@ Node *init_node(char *str, Node *head) {
     p->next = head; // 作为新的头节点
     return p;
 }
+
 
 HashTable *init_hashtable(int n) {
     HashTable *h = (HashTable *)malloc(sizeof(HashTable));
