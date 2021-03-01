@@ -235,9 +235,11 @@ void clear_tree(Tree *tree) {
 typedef struct Stack {
     int top, size;
     //char *data; // 但在此时因为是存储树形节点的地址
-    Node **data; // 注意是存地址而不是直接的节点，所以是** ????不太清楚！，
+    Node **data; // 注意是存地址而不是直接的节点
 } Stack;
+
 /*
+压入栈的是这个temp = getNewNode(str[0]);返回值是Node *是一个指针
 Node *getNewNode(char c) {
     Node *p = (Node *)malloc(sizeof(Node));
     p->data = c;
@@ -266,7 +268,7 @@ int push(Stack *s, int val) {
         // 自动扩容
         if (!expand(s)) return 0;
         printf(GREEN("success expend Stack!, size = %d\n"), s->size);
-    }
+    } 
     s->data[++(s->top)] = val;
     return 1;
 }
@@ -299,6 +301,7 @@ int empty(Stack *stack) {
 int push(Stack *stack, Node *val) {
     if (stack == NULL) return 0;
     if (stack->top + 1 == stack->size) return 0; // 已满，需要自动扩容
+    // 不过建立栈的时候都是按照字符串长度来创建的，所以肯定是足够大的
     stack->data[++(stack->top)] = val;
     return 1;
 }
@@ -383,19 +386,19 @@ Node *build(const char *str, int *node_num) {
             case ' ': break;
             default:
                 temp = getNewNode(str[0]);
-            if (!empty(s) && flag == 0) {
-                top(s)->lchild = temp; // top(s)上一个字母
-            } else if (!empty(s) && flag == 1) {
-                top(s)->rchild = temp;
-            }
-            ++(*node_num);  // 记录节点数的增加
-            break;
-
-        }
+		//!empty(s)即栈非空为真, flag判断是左孩子还是右孩子
+            	if (!empty(s) && flag == 0) {
+               		top(s)->lchild = temp; // top(s)上一个字母
+            	} else if (!empty(s) && flag == 1) {
+                	top(s)->rchild = temp;
+            	}
+            	++(*node_num);  // 记录节点数的增加
+             } break;
+    	}
         ++str; // str的首地址移动，相当于一只向后去读字符
     }
     clear_stack(s);
-    if (temp && !p) p = temp;
+    if (temp && !p) p = temp; // 此时就是整棵树只有根节点一个节点
     return p; // 最后一个元素就是根节点, 但假设整个广义表只有一个根节点，这样写就会出错,所以需要上面判断
 
 }
@@ -403,6 +406,7 @@ Node *build(const char *str, int *node_num) {
 int main() {
     char str[1000] = {0};
     int node_num = 0; // 记录节点的个数
+    // %[^\n]s  ^非 \n换行 即除了换行”
     scanf("%[^\n]s", str);   // 注意不要写成%s[^\n]会被空格打断的
     printf("test: %s\n", str);
     getchar(); // 吞掉上一个换行
