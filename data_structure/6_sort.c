@@ -194,6 +194,7 @@ void quick_sort_s(int *num, int l, int r) {
                 x++, y--;
             }
         } while (x <= y);
+	// 此时 x > y 即 l ... y x .... r
         quick_sort_s(num, l, y); // 左侧是递归
         l = x; // 右侧是循环
     }
