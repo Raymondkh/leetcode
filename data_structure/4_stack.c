@@ -29,6 +29,8 @@ Stack *init(int n) {
 
 // 打印栈顶元素的值
 int top(Stack *s) {
+	// 这里其实不够严谨，万一是空栈呢？
+	// 需要在外面判断好了再用这个函数
     return s->data[s->top];
 }
 
@@ -46,6 +48,8 @@ int expand(Stack *s) {
         extr_size >>= 1;
     }
     if (p == NULL) return 0;
+	// 注意realloc会自动释放内存
+	// 如果能原地扩容成功，那s->data == p? 经测试，是对的
     s->data = p;
     s->size += extr_size;
     return 1;
