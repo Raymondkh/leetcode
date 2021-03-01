@@ -12,7 +12,7 @@
 typedef struct Queue {
     int *data;
     int head, tail; // 头指针为指针的下标
-    int length;
+    int length;    // 总长度
 } Queue;
 
 Queue *init(int n) {
@@ -140,6 +140,7 @@ int pop(Queue *q) {
     if (q == NULL) return 0;
     if (empty(q)) return 0; // 判断是否为空，如果为空则出队失败
     q->head++; // 出队直接就head加一位，之前需要用front去读取出队数据
+	q->cnt--;
     if (q->head == q->length) q->head = 0;
     return 1;
 }
@@ -147,6 +148,8 @@ int pop(Queue *q) {
 void output(Queue *q) {
     if (q == NULL) return ;
     printf("queue:[");
+	// 注意j < q->cnt是因为如果还是q->tail，循环是q->tail已经在0，即一直小了
+	// 注意已经换成了j，因为对应的是q->cnt计数
     for (int j = 0, i = q->head; j < q->cnt; i++, j++) {
         j && printf(", ");
         printf("%d", q->data[i % q->length]);
@@ -234,7 +237,7 @@ int empty(Queue *q) {
 
 int expend(Queue *q) {
     int extr_size = q->length;
-    int *p = NULL;
+    int *p = NULL; // 记得初始化
     while (extr_size) {
         p = (int *)malloc(sizeof(int) * (q->length + extr_size));
         if (p) break; // 开辟成功
@@ -247,8 +250,8 @@ int expend(Queue *q) {
     }
     free(q->data); // 要记得释放空间
     q->data = p;
-    q->length += extr_size;
-    q->head = 0;
+    q->length += extr_size; // 记得更新q->length,q->head,q->tail
+    q->head = 0;    
     q->tail = q->cnt;
     return 1;
 }
