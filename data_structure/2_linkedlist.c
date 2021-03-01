@@ -62,7 +62,7 @@ int main() {
 // 函数定义
 
 // 生成一个节点
-ListNode *getNewNode(int val) {
+ListNode *getNewNode(int val) { 
     ListNode *p = (ListNode *)malloc(sizeof(ListNode));
     p->data = val;
     p->next = NULL;
@@ -81,10 +81,11 @@ List *getLinkList() {
 int insert(List *l, int ind, int val) {
     if (l == NULL) return 0;
     if (ind < 0 || ind > l->length) return 0;
+	// 链表没有满这一说法，可以一直无限添加，直到内存用完？
     ListNode *p = &(l->head), *node = getNewNode(val);
     while (ind--) p = p->next; // 从虚拟节点开始走的，所以会走到需要插入的前一个节点
-    node->next = p->next;
-    p->next = node;
+    node->next = p->next;  // 首先将链表目标后面接到新节点的next上
+    p->next = node;  // 然后将新节点接到目标前一个节点的next上
     l->length += 1;
     return 1;
 }
@@ -92,9 +93,12 @@ int insert(List *l, int ind, int val) {
 // 删除一个节点
 int erase(List *l, int ind) {
     if (l == NULL) return 0;
+	// ind >= l->length 包含了l->length==0为空的情况
     if (ind < 0 || ind >= l->length) return 0;
     ListNode *p = &(l->head), *q;
     while (ind--) p = p->next;
+	// 不能直接p->next = p->next->next;因为这样会造成内存泄漏
+	// 实际是可以实现功能的，但是会内存泄漏就不能用了
     q = p->next;
     p->next = q->next;
     free(q);
@@ -123,11 +127,14 @@ void clear_node(ListNode * node) {
 void clear(List *l) {
     if (l == NULL) return ;
     ListNode *p = l->head.next, *q;
+	// 先free掉除虚拟头节点完的所有节点，头节点属于list结构体的。
     while(p) {
+	    // 注意p是指针，只能用间接引用->
         q = p->next;
         free(p);
         p = q;
     }
+	// 最后再free掉链表
     free(l);
     return ;
 }
@@ -252,6 +259,7 @@ void reverse(List *l) {
     if (l == NULL) return ;
     ListNode *p = l->head.next, *q;
     l->head.next = NULL;
+	// 一直头插节点，这样其实所有节点的地址都没有改变，只是链接方式改变
     while (p) {
         q = p->next;
         p->next = l->head.next;
