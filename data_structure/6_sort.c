@@ -3,6 +3,7 @@
 	> Author: 
 	> Mail: 
 	> Created Time: Mon 15 Feb 2021 08:54:32 PM CST
+	// 动图链接：https://www.cnblogs.com/onepixel/p/7674659.html
  ************************************************************************/
 
 #include <stdio.h>
@@ -13,8 +14,10 @@
     __typeof(a) __temp = a;\
     a = b; b = __temp;\
 }
-// args...变参列表
+// args...变参列表，然后就在{}内只用名字args来使用
 //  \ 用于连接成为一行宏
+// 注意memcpy(目标， 源， 字节操作)
+// 所以是memvpy(num, arr, sizeof(int) * n );
 #define TEST(arr, n, func, args...) {\
     int *num = (int *)malloc(sizeof(int) * n);\
     memcpy(num, arr, sizeof(int) * n);\
@@ -26,8 +29,12 @@
 }
 
 // 插入排序
+// num数组num[0]...num[n-1]
 void insert_sort(int *num, int n) {
+    // i从1一直到n-1
     for (int i = 1; i < n; i++) {
+	// j表示从i一直向前交换移动，直到num[1]
+	// 因为是可以作用到num[j - 1]的，所以是可以覆盖到num[0]的
         for (int j = i; j > 0 && (num[j] < num[j - 1]); j--) {
             swap(num[j], num[j - 1]);
         }
@@ -38,9 +45,9 @@ void insert_sort(int *num, int n) {
 // 冒泡排序
 void bubble_sort(int *num, int n) {
     int times = 1; // 优化的小技巧，如在一轮中再也没有发生交换即为已顺序
-    for (int i = 1; i < n && times; i++) {  // 对比次数
+    for (int i = 1; i < n && times; i++) {  // 对比次数,共n-2轮？
         times = 0;
-        for (int j = 0; j < n - i; j++) { // 交换次数
+        for (int j = 0; j < n - i; j++) { // 交换次数，递减if
             if (num[j] <= num[j + 1]) continue;
             swap(num[j], num[j + 1]);
             times++; 
@@ -57,10 +64,13 @@ void merge_sort(int *num, int l, int r) {
             swap(num[r], num[l]);
         }
         return ;
+	// r - l <= 1 表示 rl是同一个序号或者rl相邻为最小的情况了
+	// 如果是相邻的情况直接按大小交换
     }
     int mid = (l + r) >> 1;
     merge_sort(num, l, mid);
     merge_sort(num, mid + 1, r);
+    // 此时拆分的部分已经排好序了,接下来就是合并
     int *temp = (int *)malloc(sizeof(int) * (r - l + 1));// 开辟空间来合并排序数列
     int p1 = l, p2 = mid + 1, k = 0;
     // (p1 <= mid || p2 <= r) 说明还存在需要合并的元素
@@ -68,17 +78,18 @@ void merge_sort(int *num, int l, int r) {
         if (p2 > r || (p1 <= mid && num[p1] <= num[p2])) {
             // 分析能进入这里的条件
             // p2 > r 说明p2已经没有元素了
-            // 后一个条件是比较小的就插入数列中
+            // 后一个条件是左半段比较小的就插入数列中
             temp[k++] = num[p1++];
         } else {
-            // p2 < r && p1 > mid
-            // num[p1] > num[p2]
+            // 情况1：p2 < r && p1 > mid
+            // 情况2：num[p1] > num[p2]
             temp[k++] = num[p2++];
         }
     }
-    // num + l整段的起点？
+    // num + l整段的起点
     memcpy(num + l, temp, sizeof(int) * (r - l + 1));
     free(temp);
+    return ;
 }
 
 
@@ -103,7 +114,7 @@ int main() {
     srand(time(0));
     #define MAX_N 20
     int arr[MAX_N];
-    randint(arr, MAX_N);
+    randint(arr, MAX_N);  // 给数组元素赋随机值
     // 为啥要用宏定义呢？函数不香吗？
     // 这里的num是宏定义里面的num，直接替换的
     TEST(arr, MAX_N, insert_sort, num, MAX_N);
