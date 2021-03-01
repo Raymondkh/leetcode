@@ -14,8 +14,10 @@
 
 int binary_search(int *arr, int n, int x) {
     int head = 0, tail = n - 1, mid;
+    // 注意是 <= 别忘了等于号
     while (head <= tail) {
-        mid  =(head + tail) >> 1;
+        mid = (head + tail) >> 1;
+	// mid = (head + tail) >> 1 + 1; 好像也可以？ 
         if (arr[mid] == x) return mid;
         if (arr[mid] < x) head = mid + 1;
         else tail = mid - 1; 
