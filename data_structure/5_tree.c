@@ -4,7 +4,7 @@
 	> Mail: 
 	> Created Time: Mon 15 Feb 2021 11:16:07 AM CST
  ************************************************************************/
-// 二叉树代码及周边
+// 二叉树代码及周边，链表形式
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -56,18 +56,27 @@ void clear(Tree *tree) {
 
 Node *insert_node(Node *root, int val, int *flag) {
     if (root == NULL) { // 写=则发生了段错误
+	// 递归的返回条件
         *flag = 1;
         return getNewNode(val);
     }
     if (root->data == val) return root; // 若与根节点的数值相等则直接返回
+	// [1]    32137 segmentation fault  ./a.out
+	// 递归回不来，爆栈
     if (val < root->data) root->lchild = insert_node(root->lchild, val, flag);
     else root->rchild = insert_node(root->rchild, val, flag);
     return root;
 }
 
 // 插入节点   二叉排序树，二叉查找树
+// 即在root, lchild, rchild中，lchild->data < root->data < rchild->data
+// 那是中序遍历会是递增的情况？？
+/*pre_order: 57 25 10 9 27 96 71 64 59 77 
+in_order: 9 10 25 27 57 59 64 71 77 96  确实是的vim
+post_order: 9 10 27 25 59 64 77 71 96 57 */
+
 void insert(Tree *tree, int val) {
-    int flag = 0;
+    int flag = 0; // 去判断是否成功插入节点，用来计算tree->n
     tree->root = insert_node(tree->root, val, &flag);  // 返回值是整棵树的根节点
     tree->n += flag;
     return ;
