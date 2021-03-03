@@ -48,8 +48,51 @@ int main() {
         cout << ans[i];
     }
     cout << endl;
-
-
-
     return 0;
 }
+
+/*************************************************************************
+	> File Name: euler25.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 07:25:20 PM CST
+ ************************************************************************/
+
+
+#include <iostream>
+using namespace std;
+
+int func(int *n1, int *n2) {
+    // f(n) = f(n - 1)大 + f(n - 2)小;
+    // 循环就是 大加在小上，原来的大变成下一次的小
+    // 所以n1=>f(n-2)小， n2=>f(n-1)大
+    n2[0] = n1[0];
+    for (int i = 1; i <= n2[0]; i++) {
+        n2[i] += n1[i];
+        if (n2[i] > 9) {
+            n2[i + 1] += n2[i] / 10;
+            n2[i] %= 10;
+            if (i == n2[0]){
+                n2[0]++;
+            }
+        }
+    }
+    return n2[0] >= 1000;
+}
+
+
+int main() {
+    // 长度为1，值是1？
+    int num[2][1100] = {{1, 1}, {1, 1}};
+    int a = 0, b = 1; // 用于循环相加实现斐波那契数列形式
+    for (int i = 3; 1; i++) {
+        // 注意这一传入的是指针
+        if (func(num[a], num[b])) {
+            cout << i << endl;
+            break;
+        }
+        swap(num[a], num[b]); // 始终保持小项在前
+    }
+    return 0;
+}
+// 答案：4782
