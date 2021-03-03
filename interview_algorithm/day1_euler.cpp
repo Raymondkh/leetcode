@@ -181,5 +181,79 @@ int main() {
     return 0;
 }
 
+/*************************************************************************
+	> File Name: euler6.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 08:26:00 AM CST
+ ************************************************************************/
+#include <iostream>
+using namespace std;
+
+int main() {
+    int psum = 0, sump = 0;
+    for (int i = 1; i <= 100; i++){
+        sump += i;
+        psum += i * i;
+    }
+
+    cout << sump * sump - psum<< endl;
+    sump *= sump;
+    cout << sump - psum << endl;
+
+    psum = 0;
+    sump = 0;
+    for (int i = 1; i <= 100; i++) {
+        psum += i * i;
+        sump += i;
+    }
+    sump *= sump;
+    cout << sump - psum << endl;
+    return 0;
+}
+
+/*************************************************************************
+	> File Name: euler8.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 09:44:14 AM CST
+ ************************************************************************/
+#include <iostream>
+using namespace std;
+#define MAX 1000
+
+
+int main() {
+    char num[MAX + 5] = {0};
+    cin >> num;
+    long long ans = 0, now = 1;
+    int cnt = 0;
+    for (int i = 0; i < 1000; i++) {
+        if (i < 13) {
+            // 初始化
+            now *= num[i] - '0'; // 转化为十进制的数字
+        } else {
+            if (num[i] == '0') {
+                cnt++;
+            } else {
+                now *= num[i] - '0';
+            }
+            if (num[i - 13] == '0') {
+                cnt--;
+            } else {
+                now /= num[i - 13] - '0';
+            }
+        }
+        if (cnt == 0) ans = max(ans, now);
+    }
+    cout << ans << endl;
+
+
+    return 0;
+}
+
+// input处理          :%s/ //g
+// %s字符串  / /杆空格杆空 表示将空格代替为空  /g全局替换
+
 
 
