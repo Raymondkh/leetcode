@@ -255,5 +255,145 @@ int main() {
 // input处理          :%s/ //g
 // %s字符串  / /杆空格杆空 表示将空格代替为空  /g全局替换
 
+/*************************************************************************
+	> File Name: euler11.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 10:29:42 AM CST
+ ************************************************************************/
 
+#include <iostream>
+using namespace std;
+
+int num[30][30], ans; // 都自动初始化为0
+int dirx[4] = {-1, 0, 1, 1}; // 右上，右，右下，下
+int diry[4] = {1, 1, 1, 0};
+
+
+int main() {
+    // 输入数据
+    for (int i = 5; i < 25; i++) {
+        for (int j = 5; j < 25; j++) {
+            cin >>num[i][j];
+        }
+    }
+
+    for (int i = 5; i < 25; i++) {
+        for (int j = 5; j < 25; j++) {
+            // 枚举四个方向
+            for (int k = 0; k < 4; k++) {
+                // 每个方向走3步，一共四个数
+                int t = num[i][j];
+                for (int l = 1; l < 4; l++) {
+                    int x = i + dirx[k] * l;
+                    int y = j + diry[k] * l;
+                    t *= num[x][y];
+                }
+                // 每个方向求出更新最大值
+                ans = max(t, ans);
+            }
+        }
+    }
+    cout << ans << endl;
+    return 0;
+}
+
+/*************************************************************************
+	> File Name: fbnq_r.cpp // 斐波那契数列
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 11:36:14 AM CST
+ ************************************************************************/
+
+#include <iostream>
+using namespace std;
+
+int  num[100];
+
+int func(int n) {
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    return func(n - 1) + func(n - 2);
+}
+
+int func_r(int n) {
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    if (num[n]) return num[n];
+    return num[n] = func_r(n - 1) + func_r(n - 2);
+}
+
+
+int main() {
+    int n;
+    cin >> n;
+    cout << func_r(n) << endl;
+    cout << func(n) << endl;
+    
+
+    return 0;
+}
+
+
+/*************************************************************************
+	> File Name: euler14.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 11:00:22 AM CST
+ ************************************************************************/
+
+#include <iostream>
+using namespace std;
+#define MAX 1000000
+typedef long long ll;
+
+int func(ll n) {
+    if (n == 1) return 1;
+    if (n % 2 == 0) return func(n / 2) + 1;
+    else return func(n * 3 + 1) + 1;
+}
+
+int main() {
+
+    int ans = 1;
+    for (int i = 1; i <= MAX; i++) {
+        if (func(i) > func(ans)) {
+            ans = i;
+        }
+    }
+
+    cout << ans << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+#define MAX_N 100000000
+#define MAX 10000
+typedef long long ll;
+
+ll num[MAX_N];
+
+ll func(ll n) {
+    // 注意这里要判断n < MAX_N因为你的数组只有那么大，但是实际可能会超过
+    // 超过的就没办法只能计算了
+    if (n == 1) return 1;
+    if (n < MAX_N && num[n]) return num[n];
+    if (n % 2 == 0) return num[n] = func(n / 2) + 1;
+    else return num[n] = func(n * 3 + 1) + 1;
+}
+
+
+int main() {
+
+    int ans = 1, temp = func(ans);
+    for (int i = 1; i <= MAX; i++) {
+        if (func(i) > temp) {
+            ans = i;
+            temp = func(ans);
+        }
+    }
+    cout << ans << endl;
+    return 0;
+}
 
