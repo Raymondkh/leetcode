@@ -92,3 +92,94 @@ int main() {
 
     return 0;
 }
+
+/*************************************************************************
+	> File Name: euler4.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 07:39:17 AM CST
+ ************************************************************************/
+
+#include <iostream>
+using namespace std;
+#define MAX 1000
+
+int func(int x) {
+    int rev = 0, raw = x;
+    while (x) {
+        rev = rev * 10 + x % 10;
+        x /= 10;
+    }
+    return rev == raw;
+}
+
+
+int main() {
+    
+    int ans = 0, a, b;
+    for (int i = 100; i < MAX; i++) {
+        for (int j = i; j < MAX; j++) {
+            int t = i * j;
+            if (func(t) && ans < t) {
+                ans = t;
+                a = i;
+                b = j;
+            }
+        }
+    }
+    cout << a << " "<< b<< endl;
+    cout << ans;
+
+    return 0;
+}
+// 答案：
+// 913 993
+// 906609%  
+
+/*************************************************************************
+	> File Name: euler4_1.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 07:46:48 AM CST
+ ************************************************************************/
+
+#include <iostream>
+using namespace std;
+
+int func(int x) {
+    int rev = 0, raw = x;
+    while (x) {
+        rev = rev * 10 + x % 10;
+        x /= 10;
+    }
+    return rev == raw;
+}
+
+
+int main() {
+
+    int ans = 0, a, b;
+    int max = 999 * 999;
+    int flag = 0;
+    for (int i = max; i > 10000; i--) {
+        if (!func(i)) continue;
+
+        for (int j = 999; j > 100; j--) {
+            if (i / j < 100) break;
+            if (i % j) continue;
+            ans = i;
+            a = j;
+            b = ans / a;
+            flag = 1;
+            break;
+        }
+        if (flag) break;
+
+    }
+    cout << a << " " << b << endl;
+    cout << ans;
+    return 0;
+}
+
+
+
