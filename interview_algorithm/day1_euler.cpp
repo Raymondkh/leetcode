@@ -366,6 +366,13 @@ int main() {
     return 0;
 }
 
+/*************************************************************************
+	> File Name: fbnq.cpp  // 欧拉14题加上记忆化！
+	> Author: 
+	> Mail: 
+	> Created Time: Wed 03 Mar 2021 11:09:31 AM CST
+ ************************************************************************/
+
 #include <iostream>
 using namespace std;
 #define MAX_N 100000000
