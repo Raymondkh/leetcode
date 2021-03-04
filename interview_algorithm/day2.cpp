@@ -65,7 +65,7 @@ using namespace std;
 int func(int *n1, int *n2) {
     // f(n) = f(n - 1)大 + f(n - 2)小;
     // 循环就是 大加在小上，原来的大变成下一次的小
-    // 所以n1=>f(n-2)小， n2=>f(n-1)大
+    // 所以n1=>f(n-2)大， n2=>f(n-1)小
     n2[0] = n1[0];
     for (int i = 1; i <= n2[0]; i++) {
         n2[i] += n1[i];
@@ -91,8 +91,34 @@ int main() {
             cout << i << endl;
             break;
         }
+	cout <<"before" << endl;
+        cout << "num[a] = " << num[a] << "  num[a][0] = " << num[a][0] << endl;
+        cout << "num[b] = " << num[b] << "  num[b][0] = " << num[b][0] << endl;
+        cout << endl;
+
         swap(num[a], num[b]); // 始终保持小项在前
+	    
+	cout << "after" << endl;
+	cout << "num[a] = " << num[a] << "  num[a][0] = " << num[a][0] << endl;
+        cout << "num[b] = " << num[b] << "  num[b][0] = " << num[b][0] << endl;
+        cout << endl;
+
     }
     return 0;
 }
 // 答案：4782
+/*
+before
+num[a] = 0x7ffc50bae8f0  num[a][0] = 972
+num[b] = 0x7ffc50bafa20  num[b][0] = 973
+
+after
+num[a] = 0x7ffc50bae8f0  num[a][0] = 973
+num[b] = 0x7ffc50bafa20  num[b][0] = 972
+
+由输出可以可知swap是更换两个数组的内容，可能是因为是数组地址是固定要寻址的原因才是
+更换内容，然后我觉得如果是两个指针，直接更换指针即可，内容索引方式是一样的
+
+同时可见，a是原本大的，b是原本小的；计算之后将大的叠加在小的上面
+所以计算之后b变成大的，a变成小的。swap之后继续保持a是大的，循环交换实现斐波那契数列
+*/
