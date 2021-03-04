@@ -296,6 +296,157 @@ int main() {
 }
 // 答案:1074
 
+/*************************************************************************
+	> File Name: hzoj590.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Thu 04 Mar 2021 02:39:49 PM CST
+ ************************************************************************/
+
+#include <iostream>
+#include <cstdio> // 为了输入更快
+using namespace std;
+
+// 空间换时间的做法！！
+int n, m;
+int num[1005][1005], utd[1005][1005], dtu[1005][1005];
+// mmax是最大值的j坐标，sec则是次大值的值！
+int ans[1005][1005], mmax[1005], sec[1005];
+
+void output(int arr[1005][1005], int n) {
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+
+int main() {
+    // 读入数据，所以是scanf比cin要快一点吗？
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) {
+            scanf("%d", &num[i][j]);
+        }
+    }
+
+    // 计算utd、dtu数组，实际可以一次求两个
+    // 但是便于理解就分开写
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) {
+            // 注意这里不能是+=了
+            utd[i][j] =  max(utd[i - 1][j], utd[i - 1][j - 1]) + num[i][j];        
+        }
+    }
+    for (int i = n; i > 0; i--) {
+        for (int j = 1; j <= i; j++) {
+            dtu[i][j] = max(dtu[i + 1][j], dtu[i + 1][j + 1]) + num[i][j];
+        }
+    }
+    /*
+    // 合并写
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j--) {
+            utd[i][j] += max(num[i - 1][j], num[i - 1][j - 1]);
+            dtu[n - i][j] += max(num[])   
+        }
+    }
+    */
+    // 求ans
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= i; j++) {
+            ans[i][j] = utd[i][j] + dtu[i][j] - num[i][j];
+        }
+    }
+    // 取
+    for (int i = 2; i <= n; i++) {
+        // m1最大值，m2次大值，ind最大值的j坐标
+        int m1 = 0, m2 = 0, ind = 0;
+        for (int j = 1; j <= n; j++) {
+            if (ans[i][j] > m1) {
+                m2 = m1; // 原来最大值变次大值
+                m1 = ans[i][j];
+                ind = j;
+            } else if (ans[i][j] > m2) {
+                m2 = ans[i][j];
+            }
+        }
+        // 此时已经完成一行的遍历，开始记录每行的最大值坐标和次大值
+        mmax[i] = ind;
+        sec[i] = m2;
+    }
+    cout << "udt:" << endl;
+    output(utd, n);
+    cout << "dtu:" << endl;
+    output(dtu, n);
+    cout << "ans:" << endl;
+    output(ans, n); 
+    
+    // 输入坐标
+    for (int i = 0; i < m; i++) {
+        int x, y;
+        scanf("%d%d", &x, &y);
+        if (x == 1) {
+            // 顶点被ban则无效
+            printf("-1\n");
+            // cout << -1 << endl;
+            // cout 和 cin配合用，scanf和printf配合用，尽量不要混用
+            // 会影响速度
+        } else if (y == mmax[x]) {
+            // 此时判断是不是ban的是不是最大值的点
+            printf("%d\n", sec[x]);
+            // cout << sec[x] << endl;
+        } else {
+            // 到这里说明不是最大路径和的路线被ban
+            // 所以直接输出最大值即可
+            printf("%d\n", dtu[1][1]);
+            // cout << "dtu[1][1] = "<< dtu[1][1] << endl;
+            // 不能是ans对应的坐标吗？ 
+        }
+    }
+
+
+
+    return 0;
+}
+
+/*
+5 3
+1
+3 8
+2 5 0
+1 4 3 8
+1 4 2 5 0
+udt:
+    1 
+    4 9 
+    6 14 9 
+    7 18 17 17 
+    8 22 20 22 17 
+    dtu:
+        22 
+        16 21 
+        10 13 13 
+        5 8 8 13 
+        1 4 2 5 0 
+        ans:
+            22 
+            17 22 
+            14 22 22 
+            11 22 22 22 
+            8 22 20 22 17 
+            2 2
+            17
+            5 4
+            dtu[1][1] = 22
+            1 1
+            -1
+可见ans并不是最大值和次大值组成的，因为不是每个点都会经过最大值的道路
+* */
+
+
 
 
 
