@@ -239,6 +239,16 @@ int main() {
     //输出：
     //dp_int[10][10] = 48620
     //dp_long[10][10] = 48620
+	
+    long long ans = 1;
+    for (int i = 40, j = 1; j <= 20; i--, j++) {
+        ans *= i;
+        ans /= j;
+    }
+    cout << "ans = " << ans << endl;
+    // 就是公式的化简成程序，这个程序并不通用
+    
+	
     return 0;
 }
 
