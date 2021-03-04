@@ -251,9 +251,8 @@ int main() {
 	
     return 0;
 }
-
 /*************************************************************************
-	> File Name: euler18.cpp
+	> File Name: euler18.cpp // 两种方法：从上向下，从下向上
 	> Author: 
 	> Mail: 
 	> Created Time: Thu 04 Mar 2021 11:30:06 AM CST
@@ -262,14 +261,15 @@ int main() {
 #include <iostream>
 using namespace std;
 
-int n, num[20][20];
+int n, num1[20][20], num2[20][20];
 
 int main() {
     n = 15;
     // 输入数据,注意是从1,1开始输入，边缘值为0方便计算
     for (int i = 1; i <= n; i++) {
         for (int j = 1; j <= i; j++) {
-            cin >> num[i][j];
+            cin >> num1[i][j];
+            num2[i][j] = num1[i][j];
         } 
     }
     // 逐层计算, 注意是从第二层开始
@@ -277,14 +277,25 @@ int main() {
     for (int i = 2; i <= n; i++) {
         // 每层的数组都是<=层数
         for (int j = 1; j <= n; j++) {
-	    // 左上，上的两个值的最大值
-            num[i][j] += max(num[i - 1][j], num[i - 1][j - 1]);
-            ans = max(ans, num[i][j]); // 不断记录最大值
+            num1[i][j] += max(num1[i - 1][j], num1[i - 1][j - 1]);
+            ans = max(ans, num1[i][j]); // 不断记录最大值
         }
     }
     cout << ans << endl;
+
+    // 另一种算法：从下层向上层叠加，最终答案就是顶层元素
+    for (int i = n - 1; i > 0; i--) {
+        for (int j = 1; j <= i; j++) {
+            num2[i][j] += max(num2[i + 1][j], num2[i + 1][j + 1]);
+        }
+    }
+    cout << "算法2答案：" << num2[1][1] << endl;
+
+
     return 0;
 }
 // 答案:1074
+
+
 
 
