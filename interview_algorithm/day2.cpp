@@ -122,3 +122,80 @@ num[b] = 0x7ffc50bafa20  num[b][0] = 972
 同时可见，a是原本大的，b是原本小的；计算之后将大的叠加在小的上面
 所以计算之后b变成大的，a变成小的。swap之后继续保持a是大的，循环交换实现斐波那契数列
 */
+
+/*************************************************************************
+	> File Name: mul.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Thu 04 Mar 2021 09:15:41 AM CST
+ ************************************************************************/
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// 加个flag去标记是不是负数再处理就可以实现负数相乘！
+// 定义输入大整数的字符数组
+char num1[1005], num2[1005];
+// 定义处理之后大整数和答案的整形数组
+int n1[1005], n2[1005], ans[1005];
+
+void output(int *arr) {
+    cout << "arr_length:" << arr[0] <<endl;
+    cout <<"arr :[";
+    for (int i = arr[0]; i > 0; i--) {
+        cout << arr[i] << " ";
+    }
+    cout << "]" << endl;
+    return ;
+}
+
+int main() {
+    // 输入
+    cin >> num1 >> num2;
+    n1[0] = strlen(num1);
+    n2[0] = strlen(num2);
+    ans[0] = n1[0] + n2[0] - 1; // 两个数乘法的最少位数
+    // 字符串->整形
+    // str1[0]是数字的最高位 应存在 n1的n1[n1[0]] 最后一位
+    // str是从0开始就是数字字符了
+    //for (int i = 1, j = n1[0]; i <= n1[0]; i++, j--) {
+        //n1[i] = num1[j] - '0';
+    //}
+    //for (int i = 1, j = n2[0]; i <= n2[0]; i++, j--) {
+    //    n2[i] = num2[j] - '0';
+    //}
+    //上面的转换是错误的
+    for (int i = 0, j = n1[0]; i < n1[0]; i++, j--) {
+        n1[j] = num1[i] - '0';
+    }
+    for (int i = 0, j = n2[0]; i < n2[0]; i++, j--) {
+        n2[j] = num2[i] - '0';
+    }
+    // 乘法
+    for (int i = 1; i <= n1[0]; i++) {
+        for (int j = 1; j <= n2[0]; j++) {
+            // 注意是 += 是乘法会存在重复经过ans
+            ans[i + j - 1] += n1[i] * n2[j];
+        }
+    }
+    // 处理进位
+    for (int i = 1; i <= ans[0]; i++) {
+        if (ans[i] > 9) {
+            ans[i + 1] += ans[i] / 10;
+            ans[i] %= 10;
+            if (i == ans[0]) {
+                ans[0]++;
+            }
+        }
+    }
+    // 输出 高位->低位
+    for (int i = ans[0]; i > 0; i--) {
+        cout << ans[i];
+    }
+    cout << endl;
+
+
+    return 0;
+}
+
