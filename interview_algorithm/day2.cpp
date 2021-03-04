@@ -199,3 +199,46 @@ int main() {
     return 0;
 }
 
+/*************************************************************************
+	> File Name: euler15.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Thu 04 Mar 2021 10:35:54 AM CST
+ ************************************************************************/
+
+#include <iostream>
+using namespace std;
+
+int dp[25][25]; // 可以适当开多几个
+long long dp_long[25][25];
+
+int main() {
+    
+    for (int i = 1;i <= 21; i++) {
+        for (int j = 1; j <= 21; j++) {
+            // 判断是不是起点
+            if (i == 1 && j == 1) {
+                dp[1][1] = 1;
+                dp_long[i][j] = 1; 
+            } else {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                dp_long[i][j] = dp_long[i -1][j] + dp_long[i][j - 1];
+            }
+        }
+    }
+    cout << "dp_int[21][21] = " << dp[21][21] << endl;
+    cout << "dp_long[21][21] = "<< dp_long[21][21] << endl;
+    // 输出
+    // lhh1@Aliyun day2 % ./a.out  
+    // dp_int[21][21] = 407575348
+    // dp_long[21][21] = 137846528820
+    // 两者答案本该一样，但是由于int存不下答案所以发生了错误
+
+    cout << "dp_int[10][10] = " << dp[10][10] << endl;
+    cout << "dp_long[10][10] = "<< dp_long[10][10] << endl;
+    //输出：
+    //dp_int[10][10] = 48620
+    //dp_long[10][10] = 48620
+    return 0;
+}
+
