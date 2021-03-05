@@ -248,3 +248,139 @@ int main() {
 
     return 0;
 }
+
+/*************************************************************************
+	> File Name: hzoj389.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 05 Mar 2021 10:37:16 AM CST
+ ************************************************************************/
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int m, n, num[100005];
+int l, r;
+void output(int *, int);
+
+// mid是最小距离，在mid的要求下能安排多少个人
+int func(int mid) {
+    int ans = 1;
+    int l = num[0];
+    for (int i = 1; i < m; i++) {
+        if (num[i] - l < mid) continue;
+        ans++;
+        l = num[i];
+    }
+    return ans;
+}
+
+
+
+int binary_search() {
+    while (l != r) {
+        int mid = (l + r + 1) / 2;
+        int s = func(mid); // 得出能容纳的人数
+        if (s >= n) l = mid;
+        else r = mid - 1;
+    }
+    return l;
+}
+
+
+
+int main() {
+
+    cin >> m >> n;
+    for (int i = 0; i < m; i++) {
+        cin >> num[i];
+    }
+    sort(num, num + m);
+    output(num, m);
+    r = num[m - 1] - num[0];
+    cout << "l = " << l << "  r = " << r << endl;
+    cout << binary_search() << endl;
+
+    return 0;
+}
+
+// 调试输出看看数据有没有排序好
+void output(int *num, int m) {
+    
+    for (int i = 0; i < m; i++) {
+        cout << num[i] << " ";
+    }
+
+    cout << endl;
+    return ;
+
+}
+
+/*************************************************************************
+	> File Name: hzoj390.cpp
+	> Author: 
+	> Mail: 
+	> Created Time: Fri 05 Mar 2021 09:46:50 AM CST
+ ************************************************************************/
+// 二分答案题目！！！答案满足单调性
+
+#include <iostream>
+using namespace std;
+
+// 原木的根数，切的长度，每根原木的长度
+int n, m, num[100005];
+int l, r;
+
+int func(int x) {
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+       ans += num[i] / x;
+    }
+    return ans;
+}
+
+
+int bs() {
+    while (l != r) {
+        int mid = (l + r + 1) / 2; // 为什么这里就要+1呢？
+        // 如果不+1就发生了死循环了
+        // 那什么情况应该加呢？
+        int s = func(mid);   // func函数求出在所有原木中能切出多少根
+        if (s >= m) l = mid;
+        else r = mid - 1;
+    }
+    return l;
+}
+
+int main() {
+    
+    cin >> n >> m;
+    for (int i = 0; i < n; i++) {
+        cin >> num[i];
+        r = max(r, num[i]);   
+        // r是最长原木的长度？
+        // 是指二分最长情况是最长原木的长度，即只能切出1根
+        // 而l初始化为0则是0根
+    }
+    // 答案封装的bs()函数里面求得
+    cout << bs() << endl;
+
+    return 0;
+}
+/*
+分析：
+原木切得长度范围： [0, 1, 最长原木长度]
+0是为针对答案不存在设置的虚拟位
+==>输出原木长度， 0段， [所有原木长度和， 1]段
+设定的是m段，所以 m可能不存在于当前情况，或者 [所有原木长度和, m, 1]之间
+这样是单调的，且满足 111100000找到最后一个1,即为满足条件最长原木段的需求
+
+步骤：
+1、确定是二分答案的问题？ 答案满足单调性
+2、分的答案是谁能切多少段？ --原木切断长度
+3、分清l， r上界下界
+4、二分的特殊情况：111110000， 000001111
+    最大最小这些字眼！
+*/
+
+
